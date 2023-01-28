@@ -26,4 +26,86 @@ public class WhatsappRepository {
         this.customGroupCount = 0;
         this.messageId = 0;
     }
+    public String createUser(String name, String mobile) {
+        if(userMobile.contains(mobile)){
+            return "";
+        }
+        userMobile.add(mobile);
+        User user=new User(name,mobile);
+        return"SUCCESS";
+    }
+
+    public Group createGroup(List<User> users) {
+
+        int usersCount=users.size();
+        String groupName;
+        if(usersCount==2){
+            groupName=users.get(1).getName();
+            Group group=new Group(groupName,usersCount);
+            groupUserMap.put(group,users);
+            adminMap.put(group,users.get(0));
+            return group;
+        }
+
+        groupName="Group "+customGroupCount+1;
+        customGroupCount++;
+        Group group=new Group(groupName,usersCount);
+        groupUserMap.put(group,users);
+        adminMap.put(group,users.get(0));
+        return group;
+    }
+
+    public int createMessage(String content) {
+        messageId++;
+        Date date=new Date();
+        Message message=new Message(messageId,content);;
+        // System.out.println(date);
+        return messageId;
+    }
+
+    public int sendMessage(Message message, User sender, Group group) {
+        if(!groupUserMap.containsKey(group)){
+            return -1;
+        }
+        boolean flag=false;
+        for(User user:groupUserMap.get(group)){
+            if(user.equals(sender)){
+                flag=true;
+            }
+        }
+        if(flag==false){
+            return -2;
+        }
+
+        senderMap.put(message,sender);
+
+        List<Message> messageList=new ArrayList<>();
+
+        messageList.add(message);
+        groupMessageMap.put(group,messageList);
+        return messageId;
+    }
+
+    public String changeAdmin(User approver, User user, Group group) {
+        if(!groupUserMap.containsKey(group)){
+            return "1";
+        }
+        boolean flag=false;
+        if(adminMap.get(group).equals(approver)){
+            flag=true;
+        }
+        if(flag==false){
+            return "2";
+        }
+        for(User user1:groupUserMap.get(group)){
+            if(user1.equals(user)){
+                flag=false;
+            }
+        }
+        if(flag==true){
+            return "3";
+        }
+        adminMap.put(group,user);
+        return "SUCCESS";
+    }
 }
