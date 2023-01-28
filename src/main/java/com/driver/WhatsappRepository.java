@@ -75,13 +75,14 @@ public class WhatsappRepository {
             return -2;
         }
 
-        senderMap.put(message,sender);
+        //senderMap.put(message,sender);
 
-        List<Message> messageList=new ArrayList<>();
+        List<Message> messages=new ArrayList<>();
 
-        messageList.add(message);
-        groupMessageMap.put(group,messageList);
-        return messageId;
+        messages=groupMessageMap.get(group);
+        messages.add(message);
+        groupMessageMap.put(group,messages);
+        return messages.size();
     }
 
     public String changeAdmin(User approver, User user, Group group) {
