@@ -42,10 +42,10 @@ public class WhatsappRepository {
         String groupName;
         if(usersCount==2){
             groupName=users.get(1).getName();
-            Group group=new Group(groupName,usersCount);
-            groupUserMap.put(group,users);
-            adminMap.put(group,users.get(0));
-            return group;
+            Group personalgroup=new Group(groupName,2);
+            groupUserMap.put(personalgroup, users);
+           // adminMap.put(personalgroup,users.get(0));
+            return personalgroup;
         }
         customGroupCount++;
         groupName="Group"+customGroupCount;
