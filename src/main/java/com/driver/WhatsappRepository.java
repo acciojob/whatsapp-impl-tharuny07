@@ -24,7 +24,7 @@ public class WhatsappRepository {
         this.adminMap = new HashMap<Group, User>();
         this.userMobile = new HashMap<>();
         this.customGroupCount = 0;
-        this.messageId = 0;
+        this.messageId = -1;
     }
     public String createUser(String name, String mobile) {
         if(userMobile.containsKey(mobile)){
@@ -46,7 +46,7 @@ public class WhatsappRepository {
             return group;
         }
 
-        groupName="Group "+customGroupCount+1;
+        groupName="Group "+customGroupCount;
         customGroupCount++;
         Group group=new Group(groupName,usersCount);
         groupUserMap.put(group,users);
